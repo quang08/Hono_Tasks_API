@@ -1,8 +1,8 @@
 import { serve } from "@hono/node-server";
-
+import env from "./env";
 import app from "./app";
 
-const port = Number(process.env.PORT || 3000);
+const port = env.PORT;
 console.log(`Server is running on port http://localhost:${port}`);
 
 serve({

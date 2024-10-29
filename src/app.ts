@@ -4,10 +4,6 @@ import { OpenAPIHono } from "@hono/zod-openapi";
 import { notFound, onError } from "stoker/middlewares";
 
 import { pinoLogger } from "./middlewares/pino-logger";
-import { config } from "dotenv";
-import { expand } from "dotenv-expand";
-
-expand(config())
 
 interface AppBindings {
   Variables: {
