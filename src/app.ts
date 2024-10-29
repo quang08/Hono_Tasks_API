@@ -1,32 +1,16 @@
-import type { PinoLogger } from "hono-pino";
+import createApp from "./lib/create-app";
 
-import { OpenAPIHono } from "@hono/zod-openapi";
-import { notFound, onError } from "stoker/middlewares";
+const app = createApp()
 
-import { pinoLogger } from "./middlewares/pino-logger";
+app.get('/', (c) => {
+  return c.text('Hello Hono!')
+})
 
-interface AppBindings {
-  Variables: {
-    // tells TypeScript that when you use c.var.logger, it should be treated as a PinoLogger instance, allowing TypeScript to know the correct type and avoid errors.
-    logger: PinoLogger;
-  };
-};
+app.get('/error', (c) => {
+  c.status(422)
+  c.var.logger.debug('Only visible when debug level enabled');
+  throw new Error("Oh no!")
+})
 
-const app = new OpenAPIHono<AppBindings>();
-app.use(pinoLogger());
-
-app.get("/", (c) => {
-  return c.text("Hello Hono!");
-});
-
-app.get("/error", (c) => {
-  c.status(402);
-  c.var.logger.debug("Only visible when debug level enabled");
-  throw new Error("Oh No!");
-});
-
-app.notFound(notFound);
-
-app.onError(onError);
 
 export default app;
